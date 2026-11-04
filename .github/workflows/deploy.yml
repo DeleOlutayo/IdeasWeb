@@ -25,19 +25,35 @@ jobs:
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq lftp >/dev/null
-          lftp -c "set ftp:ssl-force true; set ssl:verify-certificate true; set net:max-retries 2; set net:timeout 20; open --env-password -u \"$FTP_USERNAME\" \"$FTP_SERVER\"; cls -1a" > listing.txt
-          if grep -qxF '.ftp-deploy-sync-state.json' listing.txt; then
-            echo "Previous deployment found in this folder: safe to update."
-          elif grep -qxE 'public_html|www|mail|wp-config\.php|wp-admin|\.htaccess|index\.(html?|php)' listing.txt; then
-            echo "::error::The FTP account opens a folder that holds an existing site or account files. Nothing was uploaded. Set the account's directory to the test site's own folder."
-            exit 1
-          else
-            echo "Folder holds no existing site: safe for the first upload."
-          fi
-          rm -f listing.txt
+          python3 - <<'PY'
+          import ftplib, os, re, ssl, sys
+
+          user, password = os.environ["FTP_USERNAME"], os.environ["FTP_PASSWORD"]
+          print("username has surrounding whitespace:", user != user.strip())
+          print("password has surrounding whitespace:", password != password.strip())
+          print("username contains @:", "@" in user)
+
+          conn = ftplib.FTP_TLS(context=ssl.create_default_context(), timeout=30)
+          conn.connect(os.environ["FTP_SERVER"], 21)
+          conn.auth()
+          try:
+              conn.login(user, password)
+          except ftplib.error_perm as e:
+              sys.exit(f"::error::FTP login rejected: {e}")
+          conn.prot_p()
+          names = {name for name, _ in conn.mlsd()} - {".", ".."}
+          conn.quit()
+
+          risky = re.compile(r"public_html|www|mail|wp-config\.php|wp-admin|\.htaccess|index\.(html?|php)")
+          if ".ftp-deploy-sync-state.json" in names:
+              print("Previous deployment found in this folder: safe to update.")
+          elif any(risky.fullmatch(n) for n in names):
+              sys.exit("::error::The FTP account opens a folder that holds an existing site or account files. Nothing was uploaded. Set the account's directory to the test site's own folder.")
+          else:
+              print("Folder holds no existing site: safe for the first upload.")
+          PY
 
       - name: Collect the site files
         run: |
