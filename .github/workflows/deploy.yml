@@ -1,0 +1,57 @@
+name: Deploy to test.ideasclique.com
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-test
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Stop before uploading if the FTP account opens somewhere other than the
+      # test site's own folder, so the main website can't be overwritten.
+      # Only a verdict is logged: this repo's Actions logs are public.
+      - name: Check the FTP folder is safe to upload to
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq lftp >/dev/null
+          lftp -c "set ftp:ssl-force true; set ssl:verify-certificate true; set net:max-retries 2; set net:timeout 20; open --env-password -u \"$FTP_USERNAME\" \"$FTP_SERVER\"; cls -1a" > listing.txt
+          if grep -qxF '.ftp-deploy-sync-state.json' listing.txt; then
+            echo "Previous deployment found in this folder: safe to update."
+          elif grep -qxE 'public_html|www|mail|wp-config\.php|wp-admin|\.htaccess|index\.(html?|php)' listing.txt; then
+            echo "::error::The FTP account opens a folder that holds an existing site or account files. Nothing was uploaded. Set the account's directory to the test site's own folder."
+            exit 1
+          else
+            echo "Folder holds no existing site: safe for the first upload."
+          fi
+          rm -f listing.txt
+
+      - name: Collect the site files
+        run: |
+          mkdir site
+          cp index.html site/
+          cp -R brand_assets site/
+
+      - name: Upload over encrypted FTP
+        uses: SamKirkland/FTP-Deploy-Action@3a9c65ae0fc12ac924ccef8afc26941cc43aad0b # v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          security: strict
+          local-dir: ./site/
+          server-dir: ./
