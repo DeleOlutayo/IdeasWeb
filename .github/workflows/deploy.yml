@@ -58,7 +58,7 @@ jobs:
       - name: Collect the site files
         run: |
           mkdir site
-          cp index.html site/
+          cp index.html contact.php site/
           cp -R brand_assets site/
 
       - name: Upload over encrypted FTP

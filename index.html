@@ -409,13 +409,14 @@
           </div>
 
           <ul class="mt-10 space-y-4 text-white/85">
-            <li class="flex items-center gap-4"><span class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><a href="mailto:hello@ideasclique.com" class="link-light">hello@ideasclique.com</a></li>
+            <li class="flex items-center gap-4"><span class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><a href="mailto:info@ideasclique.com" class="link-light">info@ideasclique.com</a></li>
             <li class="flex items-center gap-4"><span class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><a href="tel:+000000000000" class="link-light">+00 000 000 0000</a></li>
             <li class="flex items-center gap-4"><span class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.3 7-12a7 7 0 1 0-14 0c0 5.7 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span data-i18n="contact.location">Your City, Your Country</span></li>
           </ul>
         </div>
 
         <form id="contactForm" class="relative rounded-3xl border border-white/10 bg-white p-6 text-ink shadow-float sm:p-10 reveal" style="transition-delay:.1s" novalidate>
+          <div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website <input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
           <div class="grid gap-5 sm:grid-cols-2">
             <label class="field"><span class="field-label" data-i18n="form.name">Full name</span><input required name="name" type="text" autocomplete="name" class="field-input" placeholder="Jane Doe" data-i18n-attr="placeholder:form.namePh" /></label>
             <label class="field"><span class="field-label" data-i18n="form.email">Work email</span><input required name="email" type="email" autocomplete="email" class="field-input" placeholder="jane@company.com" data-i18n-attr="placeholder:form.emailPh" /></label>
@@ -427,7 +428,7 @@
             </label>
             <label class="field sm:col-span-2"><span class="field-label" data-i18n="form.message">How can we help?</span><textarea name="message" rows="4" class="field-input resize-none" placeholder="A few lines about your project or challenge..." data-i18n-attr="placeholder:form.messagePh"></textarea></label>
           </div>
-          <button type="submit" class="btn-primary mt-6 w-full justify-center py-3.5 text-base">
+          <button type="submit" class="btn-primary mt-6 w-full justify-center py-3.5 text-base disabled:cursor-not-allowed disabled:opacity-60">
             <span data-i18n="form.send">Send message</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </button>
@@ -448,7 +449,7 @@
         <nav class="grid grid-cols-2 gap-8 text-sm md:col-span-7 md:grid-cols-3" data-i18n-attr="aria-label:nav.footer" aria-label="Footer">
           <div><p class="footer-head" data-i18n="nav.services">Services</p><ul class="mt-4 space-y-2.5"><li><a href="#services" class="footer-link" data-i18n="footer.strategy">Strategy</a></li><li><a href="#services" class="footer-link" data-i18n="footer.cloud">Cloud</a></li><li><a href="#services" class="footer-link" data-i18n="footer.security">Cybersecurity</a></li><li><a href="#services" class="footer-link" data-i18n="footer.data">Data</a></li></ul></div>
           <div><p class="footer-head" data-i18n="footer.company">Company</p><ul class="mt-4 space-y-2.5"><li><a href="#about" class="footer-link" data-i18n="nav.about">About</a></li><li><a href="#approach" class="footer-link" data-i18n="nav.approach">Approach</a></li><li><a href="#work" class="footer-link" data-i18n="nav.work">Work</a></li><li><a href="#contact" class="footer-link" data-i18n="footer.contact">Contact</a></li></ul></div>
-          <div><p class="footer-head" data-i18n="footer.connect">Connect</p><ul class="mt-4 space-y-2.5"><li><a href="#" class="footer-link">LinkedIn</a></li><li><a href="#" class="footer-link">X / Twitter</a></li><li><a href="mailto:hello@ideasclique.com" class="footer-link" data-i18n="footer.email">Email</a></li></ul></div>
+          <div><p class="footer-head" data-i18n="footer.connect">Connect</p><ul class="mt-4 space-y-2.5"><li><a href="#" class="footer-link">LinkedIn</a></li><li><a href="#" class="footer-link">X / Twitter</a></li><li><a href="mailto:info@ideasclique.com" class="footer-link" data-i18n="footer.email">Email</a></li></ul></div>
         </nav>
       </div>
       <div class="mt-12 flex flex-col gap-3 border-t border-black/10 pt-6 text-sm text-ink-mute sm:flex-row sm:justify-between">
@@ -524,14 +525,27 @@
     const io = new IntersectionObserver((entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    // Contact form (front-end only)
-    document.getElementById('contactForm').addEventListener('submit', (e) => {
+    // Contact form: contact.php emails each submission to the IdeasClique inbox
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const f = e.target, note = document.getElementById('formNote');
+      const f = e.target, note = document.getElementById('formNote'), button = f.querySelector('button[type="submit"]');
       const setNote = (key, cls) => { note.dataset.i18n = key; note.textContent = t(key); note.className = cls; };
-      if (!f.checkValidity()) { setNote('form.error', 'mt-4 text-center text-sm text-red-700'); return; }
-      setNote('form.thanks', 'mt-4 text-center text-sm font-semibold text-brand-600');
-      f.reset();
+      const errorClass = 'mt-4 text-center text-sm text-red-700';
+      if (!f.checkValidity()) { setNote('form.error', errorClass); return; }
+      button.disabled = true;
+      setNote('form.sending', 'mt-4 text-center text-sm text-ink-mute');
+      try {
+        const res = await fetch('contact.php', { method: 'POST', body: new FormData(f) });
+        if (res.ok) {
+          setNote('form.thanks', 'mt-4 text-center text-sm font-semibold text-brand-600');
+          f.reset();
+        } else {
+          setNote(res.status === 422 ? 'form.error' : 'form.sendFailed', errorClass);
+        }
+      } catch {
+        setNote('form.sendFailed', errorClass);
+      }
+      button.disabled = false;
     });
 
     document.getElementById('yr').textContent = new Date().getFullYear();
@@ -545,6 +559,8 @@
         'menu.close': 'Close menu',
         'form.error': 'Please add your name and a valid email address.',
         'form.thanks': 'Thank you — we’ll be in touch within one business day.',
+        'form.sending': 'Sending your message…',
+        'form.sendFailed': 'Your message could not be sent. Please email us at info@ideasclique.com.',
       },
       fr: {
         'menu.open': 'Ouvrir le menu',
@@ -667,6 +683,8 @@
         'form.messagePh': 'Quelques lignes sur votre projet ou votre défi...',
         'form.send': 'Envoyer le message',
         'form.privacy': 'Nous respectons votre vie privée. Jamais de spam.',
+        'form.sending': 'Envoi de votre message…',
+        'form.sendFailed': 'Votre message n’a pas pu être envoyé. Veuillez nous écrire à info@ideasclique.com.',
         'form.error': 'Veuillez indiquer votre nom et une adresse e-mail valide.',
         'form.thanks': 'Merci ! Nous vous répondrons sous un jour ouvré.',
 
